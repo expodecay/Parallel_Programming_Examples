@@ -15,8 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MPI_Image_Stitching.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <CudaCompile Include="Cuda_Hello_World.cu" />
   </ItemGroup>
 </Project>
