@@ -25,21 +25,21 @@ static void printUsage(char** argv) {
 // Command line arguments
 int points, thread_count;
 static int parseCmdArgs(int argc, char** argv) {
-    if (argc == 1 | argc > 3) {
+    if ((argc == 1) | (argc > 3)) {
         printUsage(argv);
         return -1;
     }
-    if (atof(argv[1]) < MIN_THREADS | atof(argv[1]) > MAX_THREADS) {
+    if ((atof(argv[1]) < MIN_THREADS) | (atof(argv[1]) > MAX_THREADS)) {
         printUsage(argv);
         return -1;
     }
-    if (atof(argv[2]) < MIN_POINTS | atof(argv[2]) > MAX_POINTS) {
+    if ((atof(argv[2]) < MIN_POINTS) | (atof(argv[2]) > MAX_POINTS)) {
         printUsage(argv);
         return -1;
     }
     
-    thread_count = static_cast<float>(atof(argv[1]));
-    points = static_cast<float>(atof(argv[2]));
+    thread_count = static_cast<int>(atof(argv[1]));
+    points = static_cast<int>(atof(argv[2]));
 
     return 0;
 }
