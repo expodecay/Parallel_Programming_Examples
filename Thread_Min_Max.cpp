@@ -58,14 +58,14 @@ int main() {
     auto start = chrono::system_clock::now();
 
     // Create thread pool and partition array evenly among them
-    const int threads = 64; //////////////////////////// CHANGED TO CONST ////////////////////////////
+    const int threads = 2; //////////////////////////// CHANGED TO CONST ////////////////////////////
     thread t[threads];
     long long slice = value / threads;
     int startIdx = 0;
     for (int i = 0; i < threads; ++i) {
         cout << "Thread[" << i << "] - slice [" << startIdx << ":" << startIdx + slice - 1 << "]" << endl;
 
-        t[i] = thread(Min_Max, ref(min), ref(max), ref(randValues), startIdx, startIdx + slice - 1);
+        t[i] = thread(Min_Max, &min, ref(max), ref(randValues), startIdx, startIdx + slice - 1);
 
         startIdx += slice;
     }
