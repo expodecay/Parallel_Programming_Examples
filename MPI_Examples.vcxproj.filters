@@ -15,8 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Thread_Monte_Carlo_PI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <CudaCompile Include="matrix.cu" />
   </ItemGroup>
 </Project>
