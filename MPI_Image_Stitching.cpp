@@ -1796,31 +1796,42 @@ int main(int argc, char** argv) {
     //    partial_result.release();
     //}
 
-    int stride = 1;
     int n = 8;
+    int stride = 1;
     int num_of_active_processors = n;
 
     vector<int> active_processors;
     vector<int> senders;
     vector<int> receivers;
 
-
-    cout << "log2(n) = " << log2(n) << endl;
     for (int i = 0; i <= log2(n) - 1; i++) {
+
         // populate active processors
-        for (int j = 0; j < num_of_active_processors; j ++) {
+        for (int j = 0; j < n; j += stride) {
             active_processors.push_back(j);
+
+            //if (i == 0) {
+            //    // initialize each with data
+            //    if (world_rank == j) {
+            //        img_0 = imread(samples::findFile(img_names_input[2 * j]));
+            //        img_1 = imread(samples::findFile(img_names_input[(2 * j) + 1]));
+            //        partial_result = image_stitch(img_0, img_1);
+            //        imwrite(format("process_%d_iteration_%d.jpg", j, i), partial_result);
+            //    }
+            //}
         }
-        // populate receivers
+
+        // populate senders and receivers
         for (int k = 0; k < active_processors.size(); k++) {
             if (k % 2 == 0){
-                receivers.push_back(k);
-                
+                receivers.push_back(active_processors[k]);
             }
             else {
-                senders.push_back(k);
+                senders.push_back(active_processors[k]);
+                //matsnd(partial_result, world_rank - pow(2, stride - 1), world_rank);                
             }
         }
+        for 
         cout << "Active processors: [" << i << "]";
         for (int i = 0; i < num_of_active_processors; i++) {
             cout << " " << active_processors[i];
@@ -1840,7 +1851,7 @@ int main(int argc, char** argv) {
         active_processors.clear();
         senders.clear();
         receivers.clear();
-        //stride++;
+        stride = 2 * stride;
         num_of_active_processors = num_of_active_processors / 2;
         
     }
