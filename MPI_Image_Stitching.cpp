@@ -1682,120 +1682,169 @@ int main(int argc, char** argv) {
      *                                  N=1                                         *
      *                                                                              *
     ********************************************************************************/
-    if (world_rank == 0) {
+    //if (world_rank == 0) {
 
-        img_0 = imread(samples::findFile(img_names_input[0]));
-        img_1 = imread(samples::findFile(img_names_input[1]));
+    //    img_0 = imread(samples::findFile(img_names_input[0]));
+    //    img_1 = imread(samples::findFile(img_names_input[1]));
 
-        // I_0_1
-        partial_result = image_stitch(img_0, img_1);
+    //    // I_0_1
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0.release();
-        img_1.release();
+    //    img_0.release();
+    //    img_1.release();
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[2]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[2]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[3]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[3]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[4]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[4]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[5]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[5]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[6]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[6]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[7]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[7]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[8]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[8]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[9]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[9]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[10]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[10]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[11]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[11]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[12]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[12]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[13]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[13]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[14]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[14]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[15]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[15]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        //----------------------------------------------------------------------------
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[16]));
-        partial_result = image_stitch(img_0, img_1);
+    //    //----------------------------------------------------------------------------
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[16]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[17]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[17]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[18]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[18]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[19]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[19]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[20]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[20]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[21]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[21]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[22]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[22]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[23]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[23]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[24]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[24]));
+    //    partial_result = image_stitch(img_0, img_1);
 
-        img_0 = partial_result;
-        img_1 = imread(samples::findFile(img_names_input[25]));
-        partial_result = image_stitch(img_0, img_1);
+    //    img_0 = partial_result;
+    //    img_1 = imread(samples::findFile(img_names_input[25]));
+    //    partial_result = image_stitch(img_0, img_1);
 
 
-        imwrite(format("process_%d.png", world_rank), partial_result);
+    //    imwrite(format("process_%d.png", world_rank), partial_result);
 
-        partial_result.release();
+    //    partial_result.release();
+    //}
+
+    int stride = 1;
+    int n = 8;
+    int num_of_active_processors = n;
+
+    vector<int> active_processors;
+    vector<int> senders;
+    vector<int> receivers;
+
+
+    cout << "log2(n) = " << log2(n) << endl;
+    for (int i = 0; i <= log2(n) - 1; i++) {
+        // populate active processors
+        for (int j = 0; j < num_of_active_processors; j ++) {
+            active_processors.push_back(j);
+        }
+        // populate receivers
+        for (int k = 0; k < active_processors.size(); k++) {
+            if (k % 2 == 0){
+                receivers.push_back(k);
+                
+            }
+            else {
+                senders.push_back(k);
+            }
+        }
+        cout << "Active processors: [" << i << "]";
+        for (int i = 0; i < num_of_active_processors; i++) {
+            cout << " " << active_processors[i];
+        }
+        cout << endl;
+        cout << "Senders: ";
+        for (int i = 0; i < senders.size(); i++) {
+            cout << " " << senders[i];
+        }
+        cout << endl;
+        cout << "Receivers: ";
+        for (int i = 0; i < receivers.size(); i++) {
+            cout << " " << receivers[i];
+        }
+        cout << endl;
+
+        active_processors.clear();
+        senders.clear();
+        receivers.clear();
+        //stride++;
+        num_of_active_processors = num_of_active_processors / 2;
+        
     }
-
+    
 
     MPI_Finalize();
 
