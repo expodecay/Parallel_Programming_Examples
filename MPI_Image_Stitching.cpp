@@ -1796,9 +1796,8 @@ int main(int argc, char** argv) {
     //    partial_result.release();
     //}
 
-    int n = 8;
+    int n = 16;
     int stride = 1;
-    int num_of_active_processors = n;
 
     vector<int> active_processors;
     vector<int> senders;
@@ -1828,12 +1827,14 @@ int main(int argc, char** argv) {
             }
             else {
                 senders.push_back(active_processors[k]);
-                //matsnd(partial_result, world_rank - pow(2, stride - 1), world_rank);                
+                //matsnd(partial_result, world_rank - pow(2, stride - 1), world_rank);   
+                cout << "process[" << active_processors[k] << "] sending to process[" << active_processors[k] - pow(2, stride - 1) << "]"  << endl;
+               // cout << "here: " << active_processors[k] << " " << pow(2, stride - 1) << endl;
             }
         }
-        for 
+        
         cout << "Active processors: [" << i << "]";
-        for (int i = 0; i < num_of_active_processors; i++) {
+        for (int i = 0; i < active_processors.size(); i++) {
             cout << " " << active_processors[i];
         }
         cout << endl;
@@ -1852,7 +1853,6 @@ int main(int argc, char** argv) {
         senders.clear();
         receivers.clear();
         stride = 2 * stride;
-        num_of_active_processors = num_of_active_processors / 2;
         
     }
     
