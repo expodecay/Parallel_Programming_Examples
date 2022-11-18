@@ -1749,46 +1749,46 @@ int main(int argc, char** argv) {
     //    img_1 = imread(samples::findFile(img_names_input[15]));
     //    partial_result = image_stitch(img_0, img_1);
 
-    //    //----------------------------------------------------------------------------
-    //    img_0 = partial_result;
-    //    img_1 = imread(samples::findFile(img_names_input[16]));
-    //    partial_result = image_stitch(img_0, img_1);
+    //    ////----------------------------------------------------------------------------
+    //    //img_0 = partial_result;
+    //    //img_1 = imread(samples::findFile(img_names_input[16]));
+    //    //partial_result = image_stitch(img_0, img_1);
 
-    //    img_0 = partial_result;
-    //    img_1 = imread(samples::findFile(img_names_input[17]));
-    //    partial_result = image_stitch(img_0, img_1);
+    //    //img_0 = partial_result;
+    //    //img_1 = imread(samples::findFile(img_names_input[17]));
+    //    //partial_result = image_stitch(img_0, img_1);
 
-    //    img_0 = partial_result;
-    //    img_1 = imread(samples::findFile(img_names_input[18]));
-    //    partial_result = image_stitch(img_0, img_1);
+    //    //img_0 = partial_result;
+    //    //img_1 = imread(samples::findFile(img_names_input[18]));
+    //    //partial_result = image_stitch(img_0, img_1);
 
-    //    img_0 = partial_result;
-    //    img_1 = imread(samples::findFile(img_names_input[19]));
-    //    partial_result = image_stitch(img_0, img_1);
+    //    //img_0 = partial_result;
+    //    //img_1 = imread(samples::findFile(img_names_input[19]));
+    //    //partial_result = image_stitch(img_0, img_1);
 
-    //    img_0 = partial_result;
-    //    img_1 = imread(samples::findFile(img_names_input[20]));
-    //    partial_result = image_stitch(img_0, img_1);
+    //    //img_0 = partial_result;
+    //    //img_1 = imread(samples::findFile(img_names_input[20]));
+    //    //partial_result = image_stitch(img_0, img_1);
 
-    //    img_0 = partial_result;
-    //    img_1 = imread(samples::findFile(img_names_input[21]));
-    //    partial_result = image_stitch(img_0, img_1);
+    //    //img_0 = partial_result;
+    //    //img_1 = imread(samples::findFile(img_names_input[21]));
+    //    //partial_result = image_stitch(img_0, img_1);
 
-    //    img_0 = partial_result;
-    //    img_1 = imread(samples::findFile(img_names_input[22]));
-    //    partial_result = image_stitch(img_0, img_1);
+    //    //img_0 = partial_result;
+    //    //img_1 = imread(samples::findFile(img_names_input[22]));
+    //    //partial_result = image_stitch(img_0, img_1);
 
-    //    img_0 = partial_result;
-    //    img_1 = imread(samples::findFile(img_names_input[23]));
-    //    partial_result = image_stitch(img_0, img_1);
+    //    //img_0 = partial_result;
+    //    //img_1 = imread(samples::findFile(img_names_input[23]));
+    //    //partial_result = image_stitch(img_0, img_1);
 
-    //    img_0 = partial_result;
-    //    img_1 = imread(samples::findFile(img_names_input[24]));
-    //    partial_result = image_stitch(img_0, img_1);
+    //    //img_0 = partial_result;
+    //    //img_1 = imread(samples::findFile(img_names_input[24]));
+    //    //partial_result = image_stitch(img_0, img_1);
 
-    //    img_0 = partial_result;
-    //    img_1 = imread(samples::findFile(img_names_input[25]));
-    //    partial_result = image_stitch(img_0, img_1);
+    //    //img_0 = partial_result;
+    //    //img_1 = imread(samples::findFile(img_names_input[25]));
+    //    //partial_result = image_stitch(img_0, img_1);
 
 
     //    imwrite(format("process_%d.png", world_rank), partial_result);
@@ -1796,7 +1796,7 @@ int main(int argc, char** argv) {
     //    partial_result.release();
     //}
 
-    int n = 16;
+    int n = 8;
     int stride = 1;
     int transfer_index = 1;
 
@@ -1810,15 +1810,15 @@ int main(int argc, char** argv) {
         for (int j = 0; j < n; j += stride) {
             active_processors.push_back(j);
 
-            //if (i == 0) {
-            //    // initialize each with data
-            //    if (world_rank == j) {
-            //        img_0 = imread(samples::findFile(img_names_input[2 * j]));
-            //        img_1 = imread(samples::findFile(img_names_input[(2 * j) + 1]));
-            //        partial_result = image_stitch(img_0, img_1);
-            //        imwrite(format("process_%d_iteration_%d.jpg", j, i), partial_result);
-            //    }
-            //}
+            if (i == 0) {
+                // initialize each with data
+                if (world_rank == j) {
+                    img_0 = imread(samples::findFile(img_names_input[2*j]));
+                    img_1 = imread(samples::findFile(img_names_input[(2*j) + 1]));
+                    partial_result = image_stitch(img_0, img_1);
+                   // imwrite(format("process_%d_iteration_%d.jpg", j, i), partial_result);
+                }
+            }
         }
 
         // populate senders and receivers
@@ -1828,13 +1828,34 @@ int main(int argc, char** argv) {
             }
             else {
                 senders.push_back(active_processors[k]);
-                //matsnd(partial_result, world_rank - pow(2, stride - 1), world_rank);   
-                cout << "process[" << active_processors[k] << "] sending to process[" << active_processors[k] - pow(2, transfer_index - 1) << "]"  << endl;
-               // cout << "here: " << active_processors[k] << " " << pow(2, stride - 1) << endl;
             }
         }
-        
-        cout << "Active processors: [" << i << "]";
+
+        // execute senders and receivers
+        for (int k = 0; k < active_processors.size(); k++) {
+
+            if (world_rank == active_processors[k]) {
+                cout << "HERE" << endl;////////////////////////////////// probably blocking here and waiting for senders to finish...
+                if (k % 2 != 0) {
+                    cout << "process[" << world_rank << "] sending to process[" << world_rank - pow(2, transfer_index - 1) << "]" << endl;
+                    matsnd(partial_result, world_rank - pow(2, transfer_index - 1), k);
+                }
+                else {
+                    cout << "process[" << world_rank << "] receiving from process[" << world_rank + pow(2, transfer_index - 1) << "]" << endl;
+                    img_0 = partial_result;
+                    img_1 = matrcv(k, buffer, active_processors[k] + pow(2, transfer_index - 1));
+                    partial_result = image_stitch(img_0, img_1);
+                   // imwrite(format("process_%d_iteration_%d.jpg", world_rank, i), partial_result);
+                }
+                // base case
+                if (active_processors.size() == 2 && world_rank == 0) {
+                    imwrite(format("process_%d_final_act_siz_%d.jpg", world_rank, active_processors.size()), partial_result);
+                }
+            }
+            
+        }
+
+        /*cout << "Active processors: [" << i << "]";
         for (int i = 0; i < active_processors.size(); i++) {
             cout << " " << active_processors[i];
         }
@@ -1848,7 +1869,7 @@ int main(int argc, char** argv) {
         for (int i = 0; i < receivers.size(); i++) {
             cout << " " << receivers[i];
         }
-        cout << endl;
+        cout << endl;*/
 
         active_processors.clear();
         senders.clear();
