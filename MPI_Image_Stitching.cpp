@@ -1796,30 +1796,44 @@ int main(int argc, char** argv) {
     //    partial_result.release();
     //}
 
-    int n = 8;
+    int num_procs = 8;
+    int num_images = 16;
     int stride = 1;
     int transfer_index = 1;
+
+    int s = (int)floor(num_images / num_procs); // inverval size
+    int s0 = s + num_images % num_procs; 
+
+    int startIndex = s0 + (world_rank - 1) * s;
+    int endIndex = startIndex + s;
 
     vector<int> active_processors;
     vector<int> senders;
     vector<int> receivers;
 
-    for (int i = 0; i <= log2(n) - 1; i++) {
+    for (int i = 0; i <= log2(num_procs); i++) {
 
-        // populate active processors
-        for (int j = 0; j < n; j += stride) {
-            active_processors.push_back(j);
+        if (i == 0) {
+            // populate active processors
+            for (int j = 0; j < num_procs; j += stride) {
+                active_processors.push_back(j);
 
-            if (i == 0) {
                 // initialize each with data
                 if (world_rank == j) {
-                    img_0 = imread(samples::findFile(img_names_input[2*j]));
-                    img_1 = imread(samples::findFile(img_names_input[(2*j) + 1]));
+                    img_0 = imread(samples::findFile(img_names_input[2 * j]));
+                    img_1 = imread(samples::findFile(img_names_input[(2 * j) + 1]));
                     partial_result = image_stitch(img_0, img_1);
-                   // imwrite(format("process_%d_iteration_%d.jpg", j, i), partial_result);
+                    imwrite(format("process_%d_iteration_%d.jpg", j, i), partial_result);
                 }
             }
+            i++;
         }
+        else {
+            for (int j = 0; j < num_procs; j += stride) {
+                active_processors.push_back(j);
+            }
+        }
+
 
         // populate senders and receivers
         for (int k = 0; k < active_processors.size(); k++) {
@@ -1831,9 +1845,9 @@ int main(int argc, char** argv) {
             }
         }
 
+
         // execute senders and receivers
         for (int k = 0; k < active_processors.size(); k++) {
-
             if (world_rank == active_processors[k]) {
                 cout << "HERE" << endl;////////////////////////////////// probably blocking here and waiting for senders to finish...
                 if (k % 2 != 0) {
@@ -1845,7 +1859,7 @@ int main(int argc, char** argv) {
                     img_0 = partial_result;
                     img_1 = matrcv(k, buffer, active_processors[k] + pow(2, transfer_index - 1));
                     partial_result = image_stitch(img_0, img_1);
-                   // imwrite(format("process_%d_iteration_%d.jpg", world_rank, i), partial_result);
+                    imwrite(format("process_%d_receiving_from_process_%f_iteration_%d.jpg", world_rank, world_rank + pow(2, transfer_index - 1), i), partial_result);
                 }
                 // base case
                 if (active_processors.size() == 2 && world_rank == 0) {
@@ -1870,6 +1884,16 @@ int main(int argc, char** argv) {
             cout << " " << receivers[i];
         }
         cout << endl;*/
+
+
+
+
+
+
+
+
+
+
 
         active_processors.clear();
         senders.clear();
