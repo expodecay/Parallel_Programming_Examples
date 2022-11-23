@@ -1796,8 +1796,8 @@ int main(int argc, char** argv) {
     //    partial_result.release();
     //}
 
-    int num_procs = 8;
-    int num_images = 17;
+    int num_procs = 4;
+    int num_images = 32;
     int stride = 1;
     int transfer_index = 1;
 
@@ -1810,6 +1810,28 @@ int main(int argc, char** argv) {
     vector<int> active_processors;
     vector<int> senders;
     vector<int> receivers;
+
+    /////////////////////////////////////////////////////// serial code ///////////////////////////////////////////////////////
+    /*if (world_rank == 0) {
+
+        partial_result = imread(samples::findFile(img_names_input[0]));
+
+        for (int i = 0; i < num_images_input - 1; i++) {
+            img_0 = partial_result;
+            img_1 = imread(samples::findFile(img_names_input[i + 1]));
+
+            partial_result = image_stitch(img_0, img_1);
+
+            img_0.release();
+            img_1.release();
+        }
+
+        imwrite(format("process_%d_serial.png", world_rank), partial_result);
+
+        partial_result.release();
+    }*/
+
+    /////////////////////////////////////////////////////// parallel code ///////////////////////////////////////////////////////
 
     for (int i = 0; i <= log2(num_procs); i++) {
 
@@ -1830,7 +1852,7 @@ int main(int argc, char** argv) {
 
                             partial_result = image_stitch(img_0, img_1);
 
-                            imwrite(format("process_%d_img__%d_img__%d.jpg", j, k, k+1), partial_result);
+                           // imwrite(format("process_%d_img__%d_img__%d.jpg", j, k, k+1), partial_result);
                         }
                     }
                     else {
@@ -1844,7 +1866,7 @@ int main(int argc, char** argv) {
                             partial_result = image_stitch(img_0, img_1);
 
                             
-                            imwrite(format("process_%d_img__%d_img__%d.jpg", j, k, k+1), partial_result);
+                           // imwrite(format("process_%d_img__%d_img__%d.jpg", j, k, k+1), partial_result);
                         }
                     }
                 }
@@ -1886,7 +1908,7 @@ int main(int argc, char** argv) {
                 }
                 // base case
                 if (active_processors.size() == 2 && world_rank == 0) {
-                    imwrite(format("process_%d_final_act_siz_%d.jpg", world_rank, active_processors.size()), partial_result);
+                    imwrite(format("process_%d_parallel_act_siz_%d.jpg", world_rank, active_processors.size()), partial_result);
                 }
             }
             
@@ -1908,16 +1930,6 @@ int main(int argc, char** argv) {
         }
         cout << endl;*/
 
-
-
-
-
-
-
-
-
-
-
         active_processors.clear();
         senders.clear();
         receivers.clear();
@@ -1934,22 +1946,3 @@ int main(int argc, char** argv) {
     std::cout << "process_" << world_rank << " ------------ Finished, total time : " << diff.count() << " s------------\n";
 }
 
-//// serial code
-//if (world_rank == 0) {
-//
-//    partial_result = imread(samples::findFile(img_names_input[0]));
-//
-//    for (int i = 0; i < num_images_input - 1; i++) {
-//        img_0 = partial_result;
-//        img_1 = imread(samples::findFile(img_names_input[i + 1]));
-//
-//        partial_result = image_stitch(img_0, img_1);
-//
-//        img_0.release();
-//        img_1.release();
-//    }
-//
-//    imwrite(format("process_%d.png", world_rank), partial_result);
-//
-//    partial_result.release();
-//}

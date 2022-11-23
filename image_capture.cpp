@@ -11,7 +11,7 @@
 int main()
 {
     cv::Mat tmp;
-    cv::VideoCapture cap("C:/Users/rickr/Documents/MPI/mpi_windows_x64/video/test_flight_003.MOV");
+    cv::VideoCapture cap("C:/Users/rickr/Desktop/UAV_Sample_Videos/DJI_0003.MOV");
     // cap is the object of class video capture that tries to capture Bumpy.mp4
     if (!cap.isOpened())  // isOpened() returns true if capturing has been initialized.
     {
@@ -35,7 +35,7 @@ int main()
 
     int i = 0;
     //while (true)
-    for(i = 0; i < 127; i++)
+    for(i = 0; i < 128; i++)
     {
         if (!(i % 1)) {
             cv::Mat frame, resized;
@@ -68,8 +68,8 @@ int main()
 
                 std::cout << "Frame # " << std::to_string(i) << " SUCCESS " << std::endl;
                 std::cout << i % 5 + "\n";
-                cv::String path = "C:/Users/rickr/Documents/MPI/mpi_windows_x64/x64/Release/sample_images/";
-                imwrite(path + cv::format("img_%d.png", i), tmp);
+                cv::String path = "C:/Users/rickr/source/repos/expodecay/Parallel_Programming_Examples/images/sample_images/";
+                imwrite(path + cv::format("img_%d.jpg", i), tmp);
 
 
                 tmp.release();
