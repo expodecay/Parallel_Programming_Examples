@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#define ARRAY_SIZE 1000000
+#define ARRAY_SIZE 17
 
 int main(int argc, char* argv[]) {
 
@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
     int s = (int)floor(ARRAY_SIZE / numprocs);
     int s0 = s + ARRAY_SIZE % numprocs;
 
-    std::cout << s0 << std::endl;
+    std::cout << std::endl;
 
     int startIndex = s0 + (myid - 1) * s;
     int endIndex = startIndex + s;
@@ -46,16 +46,16 @@ int main(int argc, char* argv[]) {
         for (i = 0; i < s0; i++) {
             part_sum += numbers[i];
         }
-        printf("Process %d - startIndex 0 endIndex %d; part_sum %ld\n",
-            myid, s0 - 1, part_sum);
+        printf("Process %d - s: %d, s0: %d -startIndex 0 endIndex %d; part_sum %ld\n",
+            myid, s, s0, s0 - 1, part_sum);
     }
     else {
         //slave's work
         for (i = startIndex; i < endIndex; i++) {
             part_sum += numbers[i];
         }
-        printf("Process %d - startIndex %d endIndex %d; part_sum %ld\n",
-            myid, startIndex, endIndex - 1, part_sum);
+        printf("Process %d - s: %d, s0: %d -startIndex %d endIndex %d; part_sum %ld\n",
+            myid, s, s0, startIndex, endIndex - 1, part_sum);
     }
 
     int sum = 0;

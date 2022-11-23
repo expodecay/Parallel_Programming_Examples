@@ -1797,12 +1797,12 @@ int main(int argc, char** argv) {
     //}
 
     int num_procs = 8;
-    int num_images = 16;
+    int num_images = 17;
     int stride = 1;
     int transfer_index = 1;
 
     int s = (int)floor(num_images / num_procs); // inverval size
-    int s0 = s + num_images % num_procs; 
+    int s0 = s + num_images % num_procs; // break it evenly
 
     int startIndex = s0 + (world_rank - 1) * s;
     int endIndex = startIndex + s;
@@ -1818,12 +1818,35 @@ int main(int argc, char** argv) {
             for (int j = 0; j < num_procs; j += stride) {
                 active_processors.push_back(j);
 
+                
                 // initialize each with data
                 if (world_rank == j) {
-                    img_0 = imread(samples::findFile(img_names_input[2 * j]));
-                    img_1 = imread(samples::findFile(img_names_input[(2 * j) + 1]));
-                    partial_result = image_stitch(img_0, img_1);
-                    imwrite(format("process_%d_iteration_%d.jpg", j, i), partial_result);
+                    if (world_rank == 0) {
+                        cout << "PROCESSOR............................. " << j << " STARTIDX: - 0 " << " ENDIDX - " << s0-1 << endl;
+                        partial_result = imread(samples::findFile(img_names_input[0]));
+                        for (int k = 0; k <= s0-1; k++) {
+                            img_0 = partial_result;
+                            img_1 = imread(samples::findFile(img_names_input[k + 1]));
+
+                            partial_result = image_stitch(img_0, img_1);
+
+                            imwrite(format("process_%d_img__%d_img__%d.jpg", j, k, k+1), partial_result);
+                        }
+                    }
+                    else {
+                        partial_result = imread(samples::findFile(img_names_input[startIndex]));
+                        cout << "PROCESSOR............................. " << j << " STARTIDX: - " << startIndex << " ENDIDX - " << endIndex-1 <<  endl;
+                        for (int k = startIndex; k < endIndex-1 ; k++) {
+                            img_0 = partial_result;
+                            img_1 = imread(samples::findFile(img_names_input[k + 1]));
+                            
+
+                            partial_result = image_stitch(img_0, img_1);
+
+                            
+                            imwrite(format("process_%d_img__%d_img__%d.jpg", j, k, k+1), partial_result);
+                        }
+                    }
                 }
             }
             i++;
@@ -1859,7 +1882,7 @@ int main(int argc, char** argv) {
                     img_0 = partial_result;
                     img_1 = matrcv(k, buffer, active_processors[k] + pow(2, transfer_index - 1));
                     partial_result = image_stitch(img_0, img_1);
-                    imwrite(format("process_%d_receiving_from_process_%f_iteration_%d.jpg", world_rank, world_rank + pow(2, transfer_index - 1), i), partial_result);
+                   // imwrite(format("process_%d_receiving_from_process_%f_iteration_%d.jpg", world_rank, world_rank + pow(2, transfer_index - 1), i), partial_result);
                 }
                 // base case
                 if (active_processors.size() == 2 && world_rank == 0) {
@@ -1910,3 +1933,23 @@ int main(int argc, char** argv) {
     std::chrono::duration<double> diff = end - start;
     std::cout << "process_" << world_rank << " ------------ Finished, total time : " << diff.count() << " s------------\n";
 }
+
+//// serial code
+//if (world_rank == 0) {
+//
+//    partial_result = imread(samples::findFile(img_names_input[0]));
+//
+//    for (int i = 0; i < num_images_input - 1; i++) {
+//        img_0 = partial_result;
+//        img_1 = imread(samples::findFile(img_names_input[i + 1]));
+//
+//        partial_result = image_stitch(img_0, img_1);
+//
+//        img_0.release();
+//        img_1.release();
+//    }
+//
+//    imwrite(format("process_%d.png", world_rank), partial_result);
+//
+//    partial_result.release();
+//}
