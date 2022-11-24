@@ -1802,7 +1802,7 @@ int main(int argc, char** argv) {
     int transfer_index = 1;
 
     int s = (int)floor(num_images / num_procs); // inverval size
-    int s0 = s + num_images % num_procs; // break it evenly
+    int s0 = s + num_images % num_procs; // find starting point. process[0] will handle elements 0 to s0
 
     int startIndex = s0 + (world_rank - 1) * s;
     int endIndex = startIndex + s;
