@@ -1797,12 +1797,12 @@ int main(int argc, char** argv) {
     //}
 
     int num_procs = 4;
-    int num_images = 32;
+    int image_count = 32;
     int stride = 1;
     int transfer_index = 1;
 
-    int s = (int)floor(num_images / num_procs); // inverval size
-    int s0 = s + num_images % num_procs; // find starting point. process[0] will handle elements 0 to s0
+    int s = (int)floor(image_count / num_procs); // inverval size
+    int s0 = s + image_count % num_procs; // find starting point. process[0] will handle elements 0 to s0
 
     int startIndex = s0 + (world_rank - 1) * s;
     int endIndex = startIndex + s;
@@ -1825,7 +1825,6 @@ int main(int argc, char** argv) {
 
         imwrite(format("process_%d_serial.png", world_rank), partial_result);
 
-        partial_result.release();
     }
 
     /////////////////////////////////////////////////////// parallel code ///////////////////////////////////////////////////////
