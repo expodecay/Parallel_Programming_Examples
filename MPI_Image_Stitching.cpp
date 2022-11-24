@@ -1821,9 +1821,6 @@ int main(int argc, char** argv) {
             img_1 = imread(samples::findFile(img_names_input[i + 1]));
 
             partial_result = image_stitch(img_0, img_1);
-
-            img_0.release();
-            img_1.release();
         }
 
         imwrite(format("process_%d_serial.png", world_rank), partial_result);
