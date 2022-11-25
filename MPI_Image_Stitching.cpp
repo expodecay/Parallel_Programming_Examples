@@ -456,7 +456,7 @@ Mat image_stitch(Mat img_0, Mat img_1) {
         //full_img = imread(samples::findFile(img_names[i]));
         full_img = imagesList[i];
         full_img_sizes[i] = full_img.size();
-
+        cout << "imagesList.size()......................................." << imagesList.size() << endl;
         if (full_img.empty())
         {
             LOGLN("Can't open image " << imagesList[i]);
@@ -1796,7 +1796,7 @@ int main(int argc, char** argv) {
     //    partial_result.release();
     //}
 
-    int num_procs = 4;
+    int num_procs = 8;
     int image_count = 32; //// might not need
     int stride = 1;
     int transfer_index = 1;
@@ -1839,30 +1839,27 @@ int main(int argc, char** argv) {
                 // initialize each with data
                 if (world_rank == j) {
                     if (world_rank == 0) {
+                        cout << "num_images_input................................................" << num_images_input << endl;
                         cout << "PROCESSOR............................. " << j << " STARTIDX: - 0 " << " ENDIDX - " << s0-1 << endl;
-                        partial_result = imread(samples::findFile(img_names_input[0]));
-                        for (int k = 0; k <= s0-1; k++) {
-                            img_0 = partial_result;
-                            img_1 = imread(samples::findFile(img_names_input[k + 1]));
 
-                            partial_result = image_stitch(img_0, img_1);
-
-                           // imwrite(format("process_%d_img__%d_img__%d.jpg", j, k, k+1), partial_result);
-                        }
+                        //partial_result = imread(samples::findFile(img_names_input[0]));
+                        //for (int k = 0; k <= s0-1; k++) {
+                        //    img_0 = partial_result;
+                        //    img_1 = imread(samples::findFile(img_names_input[k + 1]));
+                        //    partial_result = image_stitch(img_0, img_1);
+                        //   // imwrite(format("process_%d_img__%d_img__%d.jpg", j, k, k+1), partial_result);
+                        //}
                     }
                     else {
-                        partial_result = imread(samples::findFile(img_names_input[startIndex]));
                         cout << "PROCESSOR............................. " << j << " STARTIDX: - " << startIndex << " ENDIDX - " << endIndex-1 <<  endl;
-                        for (int k = startIndex; k < endIndex-1 ; k++) {
-                            img_0 = partial_result;
-                            img_1 = imread(samples::findFile(img_names_input[k + 1]));
-                            
 
-                            partial_result = image_stitch(img_0, img_1);
-
-                            
-                           // imwrite(format("process_%d_img__%d_img__%d.jpg", j, k, k+1), partial_result);
-                        }
+                        //partial_result = imread(samples::findFile(img_names_input[startIndex]));
+                        //for (int k = startIndex; k < endIndex-1 ; k++) {
+                        //    img_0 = partial_result;
+                        //    img_1 = imread(samples::findFile(img_names_input[k + 1]));
+                        //    partial_result = image_stitch(img_0, img_1);
+                        //   // imwrite(format("process_%d_img__%d_img__%d.jpg", j, k, k+1), partial_result);
+                        //}
                     }
                 }
             }
@@ -1886,28 +1883,28 @@ int main(int argc, char** argv) {
         }
 
 
-        // execute senders and receivers
-        for (int k = 0; k < active_processors.size(); k++) {
-            if (world_rank == active_processors[k]) {
-                cout << "HERE" << endl;////////////////////////////////// probably blocking here and waiting for senders to finish...
-                if (k % 2 != 0) {
-                    cout << "process[" << world_rank << "] sending to process[" << world_rank - pow(2, transfer_index - 1) << "]" << endl;
-                    matsnd(partial_result, world_rank - pow(2, transfer_index - 1), k);
-                }
-                else {
-                    cout << "process[" << world_rank << "] receiving from process[" << world_rank + pow(2, transfer_index - 1) << "]" << endl;
-                    img_0 = partial_result;
-                    img_1 = matrcv(k, buffer, active_processors[k] + pow(2, transfer_index - 1));
-                    partial_result = image_stitch(img_0, img_1);
-                   // imwrite(format("process_%d_receiving_from_process_%f_iteration_%d.jpg", world_rank, world_rank + pow(2, transfer_index - 1), i), partial_result);
-                }
-                // base case
-                if (active_processors.size() == 2 && world_rank == 0) {
-                    imwrite(format("process_%d_parallel_act_siz_%d.jpg", world_rank, active_processors.size()), partial_result);
-                }
-            }
-            
-        }
+        //// execute senders and receivers
+        //for (int k = 0; k < active_processors.size(); k++) {
+        //    if (world_rank == active_processors[k]) {
+        //        cout << "HERE" << endl;////////////////////////////////// probably blocking here and waiting for senders to finish...
+        //        if (k % 2 != 0) {
+        //            cout << "process[" << world_rank << "] sending to process[" << world_rank - pow(2, transfer_index - 1) << "]" << endl;
+        //            matsnd(partial_result, world_rank - pow(2, transfer_index - 1), k);
+        //        }
+        //        else {
+        //            cout << "process[" << world_rank << "] receiving from process[" << world_rank + pow(2, transfer_index - 1) << "]" << endl;
+        //            img_0 = partial_result;
+        //            img_1 = matrcv(k, buffer, active_processors[k] + pow(2, transfer_index - 1));
+        //            partial_result = image_stitch(img_0, img_1);
+        //           // imwrite(format("process_%d_receiving_from_process_%f_iteration_%d.jpg", world_rank, world_rank + pow(2, transfer_index - 1), i), partial_result);
+        //        }
+        //        // base case
+        //        if (active_processors.size() == 2 && world_rank == 0) {
+        //            imwrite(format("process_%d_parallel_act_siz_%d.jpg", world_rank, active_processors.size()), partial_result);
+        //        }
+        //    }
+        //    
+        //}
 
         /*cout << "Active processors: [" << i << "]";
         for (int i = 0; i < active_processors.size(); i++) {
