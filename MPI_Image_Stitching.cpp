@@ -401,13 +401,14 @@ static int parseCmdArgs(int argc, char** argv)
     return 0;
 }
 
-Mat image_stitch(Mat img_0, Mat img_1, int rank, int image_two) {
-    cout << "===========================================processor :" << rank << ": image two: " << image_two << endl;
+Mat image_stitch(Mat img_0, Mat img_1, int rank, string image_two) {
     int num_images = 2;
     vector<Mat> imagesList;
     imagesList.push_back(img_0);
     imagesList.push_back(img_1);
     Mat Stitch_result;
+
+    cout << "============= processor[" << rank << "]============ loading image... " << image_two << "   size 0: " << imagesList[0].size() <<  " size 1: " << imagesList[1].size() << endl;
 
     double work_scale = 1, seam_scale = 1, compose_scale = 1;
     bool is_work_scale_set = false, is_seam_scale_set = false, is_compose_scale_set = false;
@@ -456,8 +457,6 @@ Mat image_stitch(Mat img_0, Mat img_1, int rank, int image_two) {
         //full_img = imread(samples::findFile(img_names[i]));
         full_img = imagesList[i];
         full_img_sizes[i] = full_img.size();
-
-        cout << "................................................................ " << imagesList[i].size() << endl;
 
         if (full_img.empty())
         {
@@ -1798,8 +1797,7 @@ int main(int argc, char** argv) {
     //    partial_result.release();
     //}
 
-    int num_procs = 2;
-    int image_count = 32; //// might not need
+    int num_procs = 8;
     int stride = 1;
     int transfer_index = 1;
     int s = (int)floor(num_images_input / num_procs); // inverval size
@@ -1813,20 +1811,20 @@ int main(int argc, char** argv) {
     vector<int> receivers;
 
     /////////////////////////////////////////////////////// serial code ///////////////////////////////////////////////////////
-    //if (world_rank == 0) {
+   /* if (world_rank == 0) {
 
-    //    partial_result = imread(samples::findFile(img_names_input[0]));
+        partial_result = imread(samples::findFile(img_names_input[0]));
 
-    //    for (int i = 0; i < num_images_input - 1; i++) {
-    //        img_0 = partial_result;
-    //        img_1 = imread(samples::findFile(img_names_input[i + 1]));
+        for (int i = 0; i < num_images_input - 1; i++) {
+            img_0 = partial_result;
+            img_1 = imread(samples::findFile(img_names_input[i + 1]));
 
-    //        partial_result = image_stitch(img_0, img_1);
-    //    }
+            partial_result = image_stitch(img_0, img_1, world_rank, "hi");
+        }
 
-    //    imwrite(format("process_%d_serial.png", world_rank), partial_result);
+        imwrite(format("process_%d_serial.png", world_rank), partial_result);
 
-    //}
+    }*/
 
     /////////////////////////////////////////////////////// parallel code ///////////////////////////////////////////////////////
 
@@ -1845,10 +1843,12 @@ int main(int argc, char** argv) {
                         cout << "PROCESSOR............................. " << j << " STARTIDX: - 0 " << " ENDIDX - " << s0-1 << endl;
 
                         partial_result = imread(samples::findFile(img_names_input[0]));
-                        for (int k = 0; k <= s0-1; k++) {
+                        for (int k = 0; k < s0-1; k++) {
                             img_0 = partial_result;
-                            img_1 = imread(samples::findFile(img_names_input[k + 1]));
-                            partial_result = image_stitch(img_0, img_1, world_rank, k+1);
+
+                            img_1 = imread(samples::findFile(img_names_input[(double)k + 1]));
+
+                            partial_result = image_stitch(img_0, img_1, world_rank, img_names_input[(double)k + 1]);
                            // imwrite(format("process_%d_img__%d_img__%d.jpg", j, k, k+1), partial_result);
                         }
                     }
@@ -1858,8 +1858,10 @@ int main(int argc, char** argv) {
                         partial_result = imread(samples::findFile(img_names_input[startIndex]));
                         for (int k = startIndex; k < endIndex-1 ; k++) {
                             img_0 = partial_result;
-                            img_1 = imread(samples::findFile(img_names_input[k + 1]));
-                            partial_result = image_stitch(img_0, img_1, world_rank, k+1);
+
+                            img_1 = imread(samples::findFile(img_names_input[(double)k + 1]));
+
+                            partial_result = image_stitch(img_0, img_1, world_rank, img_names_input[(double)k + 1]);
                            // imwrite(format("process_%d_img__%d_img__%d.jpg", j, k, k+1), partial_result);
                         }
                     }
@@ -1897,7 +1899,7 @@ int main(int argc, char** argv) {
                     cout << "process[" << world_rank << "] receiving from process[" << world_rank + pow(2, transfer_index - 1) << "]" << endl;
                     img_0 = partial_result;
                     img_1 = matrcv(k, buffer, active_processors[k] + pow(2, transfer_index - 1));
-                    partial_result = image_stitch(img_0, img_1, -1, -1);
+                    partial_result = image_stitch(img_0, img_1, -1, "hello");
                    // imwrite(format("process_%d_receiving_from_process_%f_iteration_%d.jpg", world_rank, world_rank + pow(2, transfer_index - 1), i), partial_result);
                 }
                 // base case
